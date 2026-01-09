@@ -1,6 +1,6 @@
 # 4040Store - E-Commerce Frontend
 
-A modern, responsive e-commerce storefront built with Next.js 15 and React 19. This is the frontend application for the 4040Store marketplace platform.
+A modern, responsive e-commerce storefront built with Next.js 15 and React 19. This is the frontend application for the 404Store Assessment with a real functional backend service.
 
 ## Features
 
@@ -8,6 +8,7 @@ A modern, responsive e-commerce storefront built with Next.js 15 and React 19. T
 - 🛒 **Shopping Cart** - Add, update, and remove items with real-time cart updates
 - 📦 **Order Management** - Place orders and view order history
 - 🔍 **Search & Filter** - Debounced search with category and price filtering
+- 🧾 **Receipt Generation** - Generate and download order receipts as PDF
 - 📱 **Responsive Design** - Mobile-first UI with sidebar filters on desktop, sheet filters on mobile
 - ⚡ **Optimized Performance** - Built with Next.js Turbopack and React 19
 - 🎨 **Modern UI** - Beautiful animations with Framer Motion and shadcn/ui components
