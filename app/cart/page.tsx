@@ -95,7 +95,6 @@ export default function CartPage() {
                 </Card>
               ))}
             </div>
-
             {/* Order Summary */}
             <div>
               <Card className="border border-border bg-card sticky top-24 p-6 space-y-4">

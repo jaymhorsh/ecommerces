@@ -183,7 +183,7 @@ export default function CartModal() {
         className="uppercase"
         size={'sm'}
       >
-        <span className="max-md:hidden">cart</span> ({itemCount})
+        <span >Cart</span> ({itemCount})
       </Button>
       <AnimatePresence>
         {isOpen && (
