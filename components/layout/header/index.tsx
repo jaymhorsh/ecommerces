@@ -17,6 +17,10 @@ export const navItems: NavItem[] = [
     label: 'shop all',
     href: '/shop-all',
   },
+  {
+    label: 'orders',
+    href: '/orders',
+  },
 ];
 
 export function Header() {

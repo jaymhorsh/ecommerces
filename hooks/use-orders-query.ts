@@ -30,17 +30,6 @@ export const useOrderByIdQuery = (id: number) => {
 };
 
 /**
- * Hook to fetch order receipt
- */
-export const useOrderReceiptQuery = (orderId: number) => {
-  return useQuery({
-    queryKey: ['order', orderId, 'receipt'],
-    queryFn: () => orderService.getReceipt(orderId),
-    enabled: !!orderId,
-  });
-};
-
-/**
  * Hook to create a new order
  */
 export const useCreateOrderMutation = () => {
