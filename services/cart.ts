@@ -8,7 +8,7 @@ export const cartService = {
    */
   getCart: async (): Promise<ApiResponse<Cart>> => {
     const sessionId = getSessionId();
-    const response = await api.get(`/cart/${sessionId}`);
+    const response = await api.get(`cart/${sessionId}`);
     return response.data;
   },
 
@@ -20,7 +20,7 @@ export const cartService = {
     quantity: number
   ): Promise<ApiResponse<Cart>> => {
     const sessionId = getSessionId();
-    const response = await api.post(`/cart/${sessionId}`, {
+    const response = await api.post(`cart/${sessionId}`, {
       productId,
       quantity,
     });
@@ -35,7 +35,7 @@ export const cartService = {
     quantity: number
   ): Promise<ApiResponse<Cart>> => {
     const sessionId = getSessionId();
-    const response = await api.put(`/cart/${sessionId}/items/${itemId}`, {
+    const response = await api.put(`cart/${sessionId}/items/${itemId}`, {
       quantity,
     });
     return response.data;
@@ -46,7 +46,7 @@ export const cartService = {
    */
   removeFromCart: async (itemId: number): Promise<ApiResponse<Cart>> => {
     const sessionId = getSessionId();
-    const response = await api.delete(`/cart/${sessionId}/items/${itemId}`);
+    const response = await api.delete(`cart/${sessionId}/items/${itemId}`);
     return response.data;
   },
 
@@ -55,7 +55,7 @@ export const cartService = {
    */
   clearCart: async (): Promise<ApiResponse<Cart>> => {
     const sessionId = getSessionId();
-    const response = await api.delete(`/cart/${sessionId}`);
+    const response = await api.delete(`cart/${sessionId}`);
     return response.data;
   },
 };

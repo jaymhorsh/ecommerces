@@ -4,7 +4,7 @@ import { getSessionId } from '@/utils/helpers';
 
 // Base API URL - uses environment variable or defaults to the energy-stack API
 const BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || 'https://energy-stack-api.onrender.com/api';
+  process.env.NEXT_PUBLIC_API_URL || 'https://energy-stack-api.onrender.com/api/';
 
 export const api = axios.create({
   baseURL: BASE_URL,

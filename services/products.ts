@@ -1,10 +1,10 @@
-import api from '@/lib/axios-instance';
+import api from "@/lib/axios-instance";
 import type {
   Product,
   ApiResponse,
   PaginatedResponse,
   ProductFilters,
-} from '@/lib/types';
+} from "@/lib/types";
 
 export const productService = {
   /**
@@ -13,7 +13,7 @@ export const productService = {
   getProducts: async (
     filters: ProductFilters = {}
   ): Promise<PaginatedResponse<Product>> => {
-    const response = await api.get('/products', { params: filters });
+    const response = await api.get("products", { params: filters });
     return response.data;
   },
 
@@ -21,7 +21,7 @@ export const productService = {
    * Get a single product by ID
    */
   getProduct: async (id: number): Promise<ApiResponse<Product>> => {
-    const response = await api.get(`/products/${id}`);
+    const response = await api.get(`products/${id}`);
     return response.data;
   },
 
@@ -32,7 +32,7 @@ export const productService = {
     query: string,
     limit = 30
   ): Promise<PaginatedResponse<Product>> => {
-    const response = await api.get('/products/search', {
+    const response = await api.get("products/search", {
       params: { q: query, limit },
     });
     return response.data;
@@ -45,7 +45,7 @@ export const productService = {
     category: string,
     limit = 30
   ): Promise<PaginatedResponse<Product>> => {
-    const response = await api.get(`/products/category/${category}`, {
+    const response = await api.get(`products/category/${category}`, {
       params: { limit },
     });
     return response.data;
@@ -55,7 +55,7 @@ export const productService = {
    * Get all categories
    */
   getCategories: async (): Promise<string[]> => {
-    const response = await api.get('/products/categories');
+    const response = await api.get("products/categories");
     return response.data;
   },
 };

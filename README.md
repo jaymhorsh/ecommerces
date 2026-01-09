@@ -1,165 +1,185 @@
-# Get440 - Global Marketplace Platform
+# 4040Store - E-Commerce Frontend
 
-A modern, feature-rich e-commerce marketplace platform built with Next.js, designed to connect buyers with sellers worldwide.
+A modern, responsive e-commerce storefront built with Next.js 15 and React 19. This is the frontend application for the 4040Store marketplace platform.
 
 ## Features
 
-- **Responsive Design**: Mobile-first approach with beautiful UI across all devices
-- **Product Catalog**: Browse and search millions of products across multiple categories
-- **Shopping Cart**: Easy-to-use cart management with real-time updates
-- **Order Management**: Track orders and view order history
-- **Auto-Scrolling Carousel**: Featured products with smooth auto-scroll and drag-to-navigate
-- **Seller Integration**: Tools for merchants to list and manage products
-- **Secure Payments**: Ready for payment gateway integration
+- 🛍️ **Product Catalog** - Browse products with category filtering, search, and price range filters
+- 🛒 **Shopping Cart** - Add, update, and remove items with real-time cart updates
+- 📦 **Order Management** - Place orders and view order history
+- 🔍 **Search & Filter** - Debounced search with category and price filtering
+- 📱 **Responsive Design** - Mobile-first UI with sidebar filters on desktop, sheet filters on mobile
+- ⚡ **Optimized Performance** - Built with Next.js Turbopack and React 19
+- 🎨 **Modern UI** - Beautiful animations with Framer Motion and shadcn/ui components
 
 ## Tech Stack
 
-- **Frontend**: Next.js 14+ with React 18+
-- **Styling**: Tailwind CSS v4
-- **HTTP Client**: Axios with interceptors
-- **UI Components**: shadcn/ui
-- **State Management**: React Context + Custom Hooks
-- **Type Safety**: TypeScript
+| Category | Technology |
+|----------|------------|
+| Framework | Next.js 15 (App Router) |
+| UI Library | React 19 |
+| Styling | Tailwind CSS v4 |
+| Components | shadcn/ui + Radix UI |
+| State Management | Zustand + React Context |
+| HTTP Client | Axios with interceptors |
+| Animations | Framer Motion |
+| Type Safety | TypeScript |
 
 ## Project Structure
 
 ```
-├── app/                          # Next.js app directory
-│   ├── page.tsx                  # Landing page
-│   ├── products/                 # Products listing
-│   ├── cart/                     # Shopping cart
-│   ├── orders/                   # Order history
-│   └── layout.tsx                # Root layout
+├── app/                    # Next.js App Router pages
+│   ├── page.tsx            # Home/Landing page
+│   ├── shop-all/           # Product catalog with filters
+│   ├── product/[id]/       # Product detail page
+│   ├── cart/               # Shopping cart
+│   ├── checkout/           # Checkout flow
+│   └── orders/             # Order history & details
 ├── components/
-│   ├── carousel/                 # Auto-scroll carousel component
-│   ├── layout/                   # Layout components (header, footer)
-│   ├── cart/                     # Cart-related components
-│   ├── products/                 # Product-related components
-│   └── ui/                       # Reusable UI components
-├── services/                     # API service layer
-│   ├── api-client.ts             # Axios wrapper with interceptors
-│   ├── products.ts               # Product API calls
-│   ├── cart.ts                   # Cart API calls
-│   └── orders.ts                 # Orders API calls
-├── hooks/                        # Custom React hooks
-│   ├── use-products.ts           # Products hook
-│   └── use-cart.ts               # Cart hook
-├── lib/                          # Utility functions & constants
-│   ├── axios-instance.ts         # Axios configuration
-│   └── utils.ts                  # Helper utilities
-└── public/                       # Static assets
+│   ├── cart/               # Cart components (context, items, buttons)
+│   ├── layout/             # Header, footer, navigation
+│   ├── products/           # Product cards, grids
+│   ├── ui/                 # shadcn/ui components
+│   └── carousel/           # Auto-scroll product carousel
+├── services/               # API service layer
+│   ├── products.ts         # Product API calls
+│   ├── cart.ts             # Cart API calls
+│   └── orders.ts           # Order API calls
+├── store/                  # Zustand state stores
+│   ├── products-store.ts   # Products state & actions
+│   ├── cart-store.ts       # Cart state & actions
+│   └── auth-store.ts       # Auth state
+├── hooks/                  # Custom React hooks
+├── lib/                    # Utilities & axios config
+└── types/                  # TypeScript types
 ```
 
 ## Getting Started
 
+### Prerequisites
+
+- Node.js 18+ 
+- npm, yarn, or bun
+
 ### Installation
 
-1. Clone the repository
-2. Install dependencies:
 ```bash
+# Clone the repository
+git clone git@github.com:jaymhorsh/ecommerces.git
+cd ecommerces
+
+# Install dependencies
 npm install
+
+# Set up environment variables
+cp .env.example .env.local
 ```
 
-3. Set up environment variables (create `.env.local`):
-```
-NEXT_PUBLIC_API_URL=http://localhost:3000/api
+### Environment Variables
+
+Create a `.env.local` file:
+
+```env
+NEXT_PUBLIC_API_URL=https://your-api-url.com/api
 ```
 
-4. Run the development server:
+### Development
+
 ```bash
+# Start dev server with Turbopack
 npm run dev
 ```
 
-5. Open [http://localhost:3000](http://localhost:3000) in your browser
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-## API Integration
-
-The project is structured to easily integrate with a backend API. The services layer in `/services` provides all API endpoints ready for connection.
-
-### Example: Getting Products
-
-```typescript
-import { useProducts } from "@/hooks/use-products"
-
-export default function ProductsPage() {
-  const { products, loading, error } = useProducts()
-  
-  return (
-    // Your JSX here
-  )
-}
-```
-
-### Example: Managing Cart
-
-```typescript
-import { useCart } from "@/hooks/use-cart"
-
-export default function Cart() {
-  const { cart, addItem, removeItem, updateItem } = useCart()
-  
-  return (
-    // Your JSX here
-  )
-}
-```
-
-## Axios Configuration
-
-The axios client is configured with:
-- **Automatic Token Injection**: Bearer tokens automatically added to requests
-- **401 Handling**: Automatic logout and redirect to login on unauthorized access
-- **Request/Response Interceptors**: Ready for custom middleware
-- **Base URL Configuration**: Centralized API endpoint management
-
-## Components
-
-### AutoScrollCarousel
-A responsive carousel component with auto-scroll, drag-to-navigate, and manual arrow controls.
-
-**Props:**
-- `items`: Array of React components to display
-- `itemWidth`: Width of each item (default: 280px)
-- `gap`: Gap between items (default: 16px)
-- `autoScrollInterval`: Auto-scroll interval in ms (default: 3000ms)
-- `pauseOnHover`: Pause auto-scroll on hover (default: true)
-- `onItemClick`: Callback when item is clicked
-
-## Available Scripts
+### Production
 
 ```bash
-# Development
-npm run dev
-
-# Build
+# Build for production
 npm run build
 
 # Start production server
 npm start
-
-# Linting
-npm run lint
 ```
 
-## Future Enhancements
+## API Integration
 
-- Real payment gateway integration (Stripe, PayPal)
-- User authentication system
-- Product reviews and ratings
-- Wishlist functionality
-- Advanced search and filtering
-- Inventory management
-- Order notifications
-- Admin dashboard
+The app connects to a REST API backend. All API calls are centralized in the `/services` directory.
+
+### Products API
+
+```typescript
+// Fetch paginated products
+GET /products?limit=12&page=1
+
+// Fetch by category
+GET /products?category=electronics&limit=12&page=1
+
+// Search products
+GET /products?search=laptop&limit=12
+```
+
+### Cart API
+
+```typescript
+// Get cart
+GET /cart/:sessionId
+
+// Add item to cart
+POST /cart/:sessionId
+{ productId: number, quantity: number }
+
+// Update item quantity
+PUT /cart/:sessionId/items/:itemId
+{ quantity: number }
+
+// Remove item
+DELETE /cart/:sessionId/items/:itemId
+```
+
+### Orders API
+
+```typescript
+// Create order from cart
+POST /orders
+{ sessionId: string }
+
+// Get order details
+GET /orders/:id
+```
+
+## Available Scripts
+
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start development server with Turbopack |
+| `npm run build` | Build for production |
+| `npm start` | Start production server |
+| `npm run lint` | Run ESLint |
+
+## Key Features Implementation
+
+### Product Filtering
+- Category-based filtering via URL query params
+- Price range slider with min/max inputs
+- Debounced search (500ms delay)
+- Pagination with page number display
+
+### Cart Management
+- Session-based cart persistence
+- Optimistic UI updates
+- Real-time quantity editing
+- Cart total calculation
+
+### Responsive Layout
+- Desktop: Sticky sidebar filters
+- Mobile: Sheet-based filter panel
+- Adaptive grid (2-4 columns based on screen size)
 
 ## License
 
 MIT
 
-## Support
-
-For issues or questions, please contact the Get440 team.
-
 ---
 
-**Built with ❤️ for global commerce**
+**4040Store** - Modern E-Commerce Experience
