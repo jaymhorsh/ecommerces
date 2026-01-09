@@ -8,7 +8,7 @@ export const orderService = {
    */
   createOrder: async (): Promise<ApiResponse<Order>> => {
     const sessionId = getSessionId();
-    const response = await api.post('orders', { sessionId });
+    const response = await api.post('/orders', { sessionId });
     return response.data;
   },
 
@@ -16,7 +16,7 @@ export const orderService = {
    * Get order by ID
    */
   getOrder: async (id: number): Promise<ApiResponse<Order>> => {
-    const response = await api.get(`orders/${id}`);
+    const response = await api.get(`/orders/${id}`);
     return response.data;
   },
 
@@ -25,7 +25,7 @@ export const orderService = {
    */
   getOrders: async (): Promise<ApiResponse<Order[]>> => {
     const sessionId = getSessionId();
-    const response = await api.get(`orders/session/${sessionId}`);
+    const response = await api.get(`/orders/session/${sessionId}`);
     return response.data;
   },
 
