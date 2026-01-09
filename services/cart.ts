@@ -8,7 +8,7 @@ export const cartService = {
    */
   getCart: async (): Promise<ApiResponse<Cart>> => {
     const sessionId = getSessionId();
-    const response = await api.get(`cart/${sessionId}`);
+    const response = await api.get(`/cart/${sessionId}`);
     return response.data;
   },
 
