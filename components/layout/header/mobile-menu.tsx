@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { navItems } from './index';
 import { SidebarLinks } from '../sidebar/product-sidebar-links';
-import { ShopLinks } from '../shop-links';
 import { useBodyScrollLock } from '@/lib/hooks/use-body-scroll-lock';
 
 export default function MobileMenu() {
@@ -66,24 +65,24 @@ export default function MobileMenu() {
               animate={{ x: 0 }}
               exit={{ x: '-100%' }}
               transition={{ duration: 0.3, ease: 'easeInOut' }}
-              className="fixed top-0 bottom-0 left-0 flex w-full md:w-[400px] p-modal-sides z-50"
+              className="fixed top-0 bottom-0 left-0 flex w-full max-sm:w-[300px] z-50 h-screen"
             >
-              <div className="flex flex-col p-3 w-full rounded bg-muted md:p-4">
-                <div className="flex justify-between items-baseline pl-2 mb-10">
-                  <p className="text-2xl font-semibold">Menu</p>
-                  <Button size="sm" variant="ghost" aria-label="Close cart" onClick={closeMobileMenu}>
+              <div className="flex flex-col py-4 px-4 w-full h-full rounded-r-md bg-background shadow-2xl border border-border overflow-hidden">
+                <div className="flex justify-between items-baseline mb-6 pb-4 border-b border-border">
+                  <p className="text-xl font-bold text-foreground">Menu</p>
+                  <Button size="sm" variant="outline" aria-label="Close menu" onClick={closeMobileMenu}>
                     Close
                   </Button>
                 </div>
 
-                <nav className="grid grid-cols-2 gap-y-4 gap-x-6 mb-10">
+                <nav className="flex flex-col gap-y-3 gap-x-4 mb-8">
                   {navItems.map(item => (
                     <Button
                       key={item.href}
                       size="sm"
                       variant="secondary"
                       onClick={closeMobileMenu}
-                      className="justify-start uppercase bg-background/50"
+                      className="justify-start uppercase"
                       asChild
                     >
                       <Link href={item.href} prefetch>
@@ -93,17 +92,15 @@ export default function MobileMenu() {
                   ))}
                 </nav>
 
-                <ShopLinks label="Categories" />
-
-                <div className="mt-auto mb-6 text-sm leading-tight opacity-50">
-                  <p className="italic">Refined. Minimal. Never boring.</p>
-                  <div className="mt-5">
-                    <p>Furniture that speaks softly, but stands out loud.</p>
-                    <p>Clean lines, crafted with wit.</p>
-                    <p>Elegance with a wink — style first</p>
+                <div className="mt-auto mb-6 text-sm leading-tight text-muted-foreground">
+                  <p className="italic">Advanced Power Solutions. Efficient. Reliable.</p>
+                  <div className="mt-5 space-y-1">
+                    <p>Inverters that convert DC to AC power seamlessly.</p>
+                    <p>Maximum efficiency with advanced electrical engineering.</p>
+                    <p>Solar energy optimization - sustainable power first</p>
                   </div>
                 </div>
-                <SidebarLinks className="gap-2 w-full" />
+              
               </div>
             </motion.div>
           </>

@@ -483,7 +483,7 @@ export default function ProductsPage() {
                     <SlidersHorizontal className="h-5 w-5" />
                   </Button>
                 </SheetTrigger>
-                <SheetContent side="left" className="w-80">
+                <SheetContent side="left" className="px-3 w-80">
                   <SheetHeader>
                     <SheetTitle>Filters</SheetTitle>
                   </SheetHeader>
