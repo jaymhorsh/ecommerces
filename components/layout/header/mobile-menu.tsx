@@ -2,11 +2,10 @@
 
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { navItems } from './index';
-import { SidebarLinks } from '../sidebar/product-sidebar-links';
 import { useBodyScrollLock } from '@/lib/hooks/use-body-scroll-lock';
 
 export default function MobileMenu() {
