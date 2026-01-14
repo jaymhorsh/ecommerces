@@ -80,9 +80,11 @@ export default async function ProductPage({ params }: ProductPageProps) {
   }
 
   const productImage = product.images?.[0] || product.thumbnail || "/placeholder.svg"
-  const isInStock = product.stock > 0
-  const hasDiscount = product.discountPercentage && product.discountPercentage > 0
-  const discountedPrice = hasDiscount ? product.price * (1 - (product.discountPercentage || 0) / 100) : product.price
+  const isInStock = typeof product.stock === "number" && product.stock > 0
+  const price = typeof product.price === "number" ? product.price : 0
+  const discountPercentage = typeof product.discountPercentage === "number" ? product.discountPercentage : 0
+  const hasDiscount = discountPercentage > 0
+  const discountedPrice = hasDiscount ? price * (1 - discountPercentage / 100) : price
 
   const productJsonLd = {
     "@context": "https://schema.org",
@@ -93,7 +95,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
     offers: {
       "@type": "Offer",
       availability: isInStock ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
-      price: discountedPrice.toFixed(2),
+      price: Number(discountedPrice).toFixed(2),
       priceCurrency: "USD",
     },
   }
