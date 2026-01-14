@@ -70,23 +70,23 @@ export function AddToCart({
       >
         <AnimatePresence initial={false} mode="wait">
           {iconOnly ? (
-            <motion.div
+            <div
               key={isLoading ? "loading" : "icon"}
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.8 }}
-              transition={{ duration: 0.15 }}
+              // initial={{ opacity: 0, scale: 0.8 }}
+              // animate={{ opacity: 1, scale: 1 }}
+              // exit={{ opacity: 0, scale: 0.8 }}
+              // transition={{ duration: 0.15 }}
               className="flex justify-center items-center"
             >
               {isLoading ? <Loader size={getLoaderSize()} /> : <span className="inline-block">{icon}</span>}
-            </motion.div>
+            </div>
           ) : (
-            <motion.div
+            <div
               key={isLoading ? "loading" : getButtonText()}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.15 }}
+              // initial={{ opacity: 0 }}
+              // animate={{ opacity: 1 }}
+              // exit={{ opacity: 0 }}
+              // transition={{ duration: 0.15 }}
               className="flex justify-center items-center w-full"
             >
               {isLoading ? (
@@ -97,7 +97,7 @@ export function AddToCart({
                   <ShoppingCart className="h-4 w-4" />
                 </div>
               )}
-            </motion.div>
+            </div>
           )}
         </AnimatePresence>
       </Button>

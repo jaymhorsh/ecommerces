@@ -1,4 +1,4 @@
-'use client';
+"use client"
 
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -48,22 +48,22 @@ export default function MobileMenu() {
         {isOpen && (
           <>
             {/* Backdrop */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3, ease: 'easeInOut' }}
+            <div
+              // initial={{ opacity: 0 }}
+              // animate={{ opacity: 1 }}
+              // exit={{ opacity: 0 }}
+              // transition={{ duration: 0.3, ease: 'easeInOut' }}
               className="fixed inset-0 z-50 bg-foreground/30"
               onClick={closeMobileMenu}
               aria-hidden="true"
             />
 
             {/* Panel */}
-            <motion.div
-              initial={{ x: '-100%' }}
-              animate={{ x: 0 }}
-              exit={{ x: '-100%' }}
-              transition={{ duration: 0.3, ease: 'easeInOut' }}
+            <div
+              // initial={{ x: '-100%' }}
+              // animate={{ x: 0 }}
+              // exit={{ x: '-100%' }}
+              // transition={{ duration: 0.3, ease: 'easeInOut' }}
               className="fixed top-0 bottom-0 left-0 flex w-full max-sm:w-[300px] z-50 h-screen"
             >
               <div className="flex flex-col py-4 px-4 w-full h-full rounded-r-md bg-background shadow-2xl border border-border overflow-hidden">
@@ -101,7 +101,7 @@ export default function MobileMenu() {
                 </div>
               
               </div>
-            </motion.div>
+            </div>
           </>
         )}
       </AnimatePresence>

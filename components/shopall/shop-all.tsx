@@ -211,13 +211,13 @@ export default function ShowAllComponent() {
             {/* Products */}
             {!isLoading && filteredProducts.length > 0 && (
               <>
-                <motion.div  className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div  className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                   <AnimatePresence>
                     {filteredProducts.map((product, idx) => (
                       <ProductCard key={product.id} product={product} index={idx} />
                     ))}
                   </AnimatePresence>
-                </motion.div>
+                </div>
 
                 {/* Pagination */}
                 {totalPages > 1 && (

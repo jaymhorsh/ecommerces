@@ -32,10 +32,10 @@ export function ProductCard({ product, index }: ProductCardProps) {
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3, delay: index * 0.03 }}
+    <div
+      // initial={{ opacity: 0, y: 20 }}
+      // animate={{ opacity: 1, y: 0 }}
+      // transition={{ duration: 0.3, delay: index * 0.03 }}
     >
       <Link href={`/product/${product.id}`} className="block group">
         <Card className="overflow-hidden border-0 bg-card hover:shadow-xl transition-all duration-300 h-full flex flex-col rounded-xl">
@@ -80,6 +80,6 @@ export function ProductCard({ product, index }: ProductCardProps) {
           </div>
         </Card>
       </Link>
-    </motion.div>
+    </div>
   )
 }

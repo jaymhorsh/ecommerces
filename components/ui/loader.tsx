@@ -37,16 +37,16 @@ function Loader({ size, className }: LoaderProps) {
   return (
     <div className={cn(loaderVariants({ size }), className)}>
       {[0, 1, 2].map(index => (
-        <motion.div
+        <div
           key={index}
           className={cn(squareVariants({ size }))}
-          animate={{ opacity: [0.3, 1, 0.3] }}
-          transition={{
-            duration: 0.8,
-            repeat: Infinity,
-            delay: index * 0.2,
-            ease: 'easeInOut',
-          }}
+          // animate={{ opacity: [0.3, 1, 0.3] }}
+          // transition={{
+          //   duration: 0.8,
+          //   repeat: Infinity,
+          //   delay: index * 0.2,
+          //   ease: 'easeInOut',
+          // }}
         />
       ))}
     </div>

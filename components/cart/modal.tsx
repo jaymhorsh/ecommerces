@@ -40,14 +40,14 @@ const CartItems = ({ closeCart }: { closeCart: () => void }) => {
         <CartContainer className="overflow-y-auto flex flex-col gap-y-3 h-full scrollbar-hide">
           <AnimatePresence>
             {cart.items.map((item) => (
-              <motion.div
+              <div
                 key={item.id}
-                layout
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.3, ease: "easeOut" }}
+          
+              
+             
               >
                 <CartItemCard item={item} onCloseCart={closeCart} />
-              </motion.div>
+              </div>
             ))}
           </AnimatePresence>
         </CartContainer>
@@ -177,22 +177,22 @@ export default function CartModal() {
         {isOpen && (
           <>
             {/* Backdrop */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3, ease: "easeInOut" }}
+            <div
+              // initial={{ opacity: 0 }}
+              // animate={{ opacity: 1 }}
+              // exit={{ opacity: 0 }}
+              // transition={{ duration: 0.3, ease: "easeInOut" }}
               className="fixed inset-0 z-50 bg-foreground/30"
               onClick={closeCart}
               aria-hidden="true"
             />
 
             {/* Panel */}
-            <motion.div
-              initial={{ x: "100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "100%" }}
-              transition={{ duration: 0.3, ease: "easeInOut" }}
+            <div
+              // initial={{ x: "100%" }}
+              // animate={{ x: 0 }}
+              // exit={{ x: "100%" }}
+              // transition={{ duration: 0.3, ease: "easeInOut" }}
               className="fixed top-0 bottom-0 right-0 flex w-full md:w-[420px] p-3 z-50 h-screen"
             >
               <div className="flex flex-col py-4 w-full h-full rounded-xl bg-background shadow-2xl border border-border overflow-hidden">
@@ -211,7 +211,7 @@ export default function CartModal() {
 
                 {renderCartContent()}
               </div>
-            </motion.div>
+            </div>
           </>
         )}
       </AnimatePresence>
