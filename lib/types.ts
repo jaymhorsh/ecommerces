@@ -61,6 +61,7 @@ export interface Order {
   items: OrderItem[];
   createdAt: string;
   updatedAt: string;
+  shipping: number;
 }
 
 // API Response Types

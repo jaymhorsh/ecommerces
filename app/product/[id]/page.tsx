@@ -1,7 +1,8 @@
-import type { Metadata } from 'next';
-import { notFound } from 'next/navigation';
-import Image from 'next/image';
-import Link from 'next/link';
+
+
+import type { Metadata } from "next"
+import { notFound } from "next/navigation"
+import Image from "next/image"
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -9,51 +10,49 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
   BreadcrumbPage,
-} from '@/components/ui/breadcrumb';
-import { AddToCart } from '@/components/cart/add-to-cart';
-import { PageLayout } from '@/components/layout/page-layout';
-import { formatCurrency } from '@/utils/helpers';
-import { productService } from '@/services/products';
-import { Badge } from '@/components/ui/badge';
-import { Star, Truck, Shield, RefreshCw } from 'lucide-react';
-import { CATEGORIES } from '@/store/products-store';
+} from "@/components/ui/breadcrumb"
+import { AddToCart } from "@/components/cart/add-to-cart"
+import { PageLayout } from "@/components/layout/page-layout"
+import { formatCurrency } from "@/utils/helpers"
+import { productService } from "@/services/products"
+import { Badge } from "@/components/ui/badge"
+import { Star, Truck, Shield, RefreshCw } from "lucide-react"
+import { CATEGORIES } from "@/lib/constants/products"
 
 // Helper to get category label
 function getCategoryLabel(category: string): string {
-  const found = CATEGORIES.find(c => c.value === category);
-  return found?.label || category;
+  const found = CATEGORIES.find((c) => c.value === category)
+  return found?.label || category
 }
 
 interface ProductPageProps {
-  params: Promise<{ id: string }>;
+  params: Promise<{ id: string }>
 }
 
 // Enable ISR with 1 minute revalidation
-export const revalidate = 60;
+export const revalidate = 60
 
 async function getProduct(id: string) {
   try {
-    const productId = parseInt(id, 10);
-    if (isNaN(productId)) return null;
+    const productId = Number.parseInt(id, 10)
+    if (isNaN(productId)) return null
 
-    const response = await productService.getProduct(productId);
-    return response.data;
+    const response = await productService.getProduct(productId)
+    return response.data
   } catch (error) {
-    console.error('Error fetching product:', error);
-    return null;
+    console.error("Error fetching product:", error)
+    return null
   }
 }
 
-export async function generateMetadata({
-  params,
-}: ProductPageProps): Promise<Metadata> {
-  const { id } = await params;
-  const product = await getProduct(id);
+export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
+  const { id } = await params
+  const product = await getProduct(id)
 
   if (!product) {
     return {
-      title: 'Product Not Found',
-    };
+      title: "Product Not Found",
+    }
   }
 
   return {
@@ -69,223 +68,150 @@ export async function generateMetadata({
           ],
         }
       : undefined,
-  };
+  }
 }
 
 export default async function ProductPage({ params }: ProductPageProps) {
-  const { id } = await params;
-  const product = await getProduct(id);
+  const { id } = await params
+  const product = await getProduct(id)
 
   if (!product) {
-    return notFound();
+    return notFound()
   }
 
-  const productImage =
-    product.images?.[0] || product.thumbnail || '/placeholder.svg';
-  const isInStock = product.stock > 0;
-  const hasDiscount = product.discountPercentage && product.discountPercentage > 0;
-  const discountedPrice = hasDiscount
-    ? product.price * (1 - (product.discountPercentage || 0) / 100)
-    : product.price;
+  const productImage = product.images?.[0] || product.thumbnail || "/placeholder.svg"
+  const isInStock = product.stock > 0
+  const hasDiscount = product.discountPercentage && product.discountPercentage > 0
+  const discountedPrice = hasDiscount ? product.price * (1 - (product.discountPercentage || 0) / 100) : product.price
 
   const productJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'Product',
+    "@context": "https://schema.org",
+    "@type": "Product",
     name: product.name,
     description: product.description,
     image: productImage,
     offers: {
-      '@type': 'Offer',
-      availability: isInStock
-        ? 'https://schema.org/InStock'
-        : 'https://schema.org/OutOfStock',
-      priceCurrency: 'NGN',
-      price: discountedPrice,
+      "@type": "Offer",
+      availability: isInStock ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+      price: discountedPrice.toFixed(2),
+      priceCurrency: "USD",
     },
-  };
+  }
 
   return (
-    <PageLayout className="bg-background">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(productJsonLd),
-        }}
-      />
+    <PageLayout>
+      <Breadcrumb className="mb-6">
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/shop-all">Shop</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink href={`/shop-all?category=${product.category}`}>
+              {getCategoryLabel(product.category)}
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>{product.name}</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
 
-      <div className="container mx-auto px-4 pt-24 pb-12">
-        {/* Breadcrumb */}
-        <Breadcrumb className="mb-8">
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <Link href="/shop-all" className="text-muted-foreground hover:text-foreground transition-colors">Shop</Link>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <Link href={`/shop-all?category=${product.category}`} className="text-muted-foreground hover:text-foreground transition-colors">
-                  {getCategoryLabel(product.category)}
-                </Link>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage className="text-foreground font-medium">{product.name}</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+        {/* Product Image */}
+        <div className="flex items-center justify-center bg-muted rounded-lg overflow-hidden aspect-square">
+          <Image
+            src={productImage || "/placeholder.svg"}
+            alt={product.name}
+            width={500}
+            height={500}
+            priority
+            className="w-full h-full object-cover"
+          />
+        </div>
 
-        <div className="grid md:grid-cols-2 gap-8 lg:gap-16">
-          {/* Product Images */}
-          <div className="space-y-4">
-            <div className="relative aspect-square overflow-hidden rounded-2xl bg-muted">
-              <Image
-                src={productImage}
-                alt={product.name}
-                fill
-                className="object-contain p-4"
-                priority
-              />
-              {hasDiscount && (
-                <Badge className="absolute top-4 left-4 bg-red-500 text-white border-0">
-                  -{product.discountPercentage}%
-                </Badge>
-              )}
-              {!isInStock && (
-                <Badge
-                  variant="secondary"
-                  className="absolute top-4 right-4 bg-black/70 text-white border-0"
-                >
-                  Out of Stock
-                </Badge>
-              )}
+        {/* Product Details */}
+        <div className="flex flex-col">
+          <div className="mb-4">
+            <Badge variant="secondary">{getCategoryLabel(product.category)}</Badge>
+          </div>
+
+          <h1 className="text-3xl font-bold mb-2">{product.name}</h1>
+
+          {/* Rating */}
+          <div className="flex items-center gap-2 mb-4">
+            <div className="flex items-center">
+              {[...Array(5)].map((_, i) => (
+                <Star
+                  key={i}
+                  className={`h-4 w-4 ${
+                    i < Math.floor(product.rating || 4.8) ? "fill-amber-400 text-amber-400" : "text-muted-foreground/30"
+                  }`}
+                />
+              ))}
             </div>
+            <span className="text-sm text-muted-foreground">({product.rating || 4.8})</span>
+          </div>
 
-            {/* Thumbnail Gallery */}
-            {product.images && product.images.length > 1 && (
-              <div className="grid grid-cols-4 gap-3">
-                {product.images.slice(0, 4).map((image, index) => (
-                  <div
-                    key={index}
-                    className="relative aspect-square overflow-hidden rounded-xl bg-muted cursor-pointer hover:opacity-80 transition-opacity"
-                  >
-                    <Image
-                      src={image}
-                      alt={`${product.name} ${index + 1}`}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                ))}
+          {/* Price */}
+          <div className="mb-6">
+            {hasDiscount ? (
+              <div className="flex items-center gap-2">
+                <span className="text-3xl font-bold text-primary">{formatCurrency(discountedPrice)}</span>
+                <span className="text-lg text-muted-foreground line-through">{formatCurrency(product.price)}</span>
+                <Badge variant="destructive">-{product.discountPercentage}%</Badge>
               </div>
+            ) : (
+              <span className="text-3xl font-bold">{formatCurrency(product.price)}</span>
             )}
           </div>
 
-          {/* Product Info */}
-          <div className="flex flex-col">
-            <div className="space-y-6">
+          {/* Description */}
+          <p className="text-muted-foreground mb-6 leading-relaxed">{product.description}</p>
+
+          {/* Stock Status */}
+          <div className="mb-6">
+            {isInStock ? (
+              <Badge variant="default" className="bg-green-600">
+                In Stock ({product.stock} available)
+              </Badge>
+            ) : (
+              <Badge variant="destructive">Out of Stock</Badge>
+            )}
+          </div>
+
+          {/* Add to Cart */}
+          <AddToCart productId={product.id} isOutOfStock={!isInStock} className="mb-6" />
+
+          {/* Benefits */}
+          <div className="space-y-3 border-t pt-6 mt-6">
+            <div className="flex items-start gap-3">
+              <Truck className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
               <div>
-                <span className="inline-block px-3 py-1 text-xs font-medium bg-primary/10 text-primary rounded-full mb-3">
-                  {getCategoryLabel(product.category)}
-                </span>
-                <h1 className="text-2xl lg:text-3xl font-bold text-foreground">
-                  {product.name}
-                </h1>
+                <p className="font-medium">Free Shipping</p>
+                <p className="text-sm text-muted-foreground">On orders over $50</p>
               </div>
-
-              {/* Rating */}
-              {product.rating && (
-                <div className="flex items-center gap-2">
-                  <div className="flex items-center">
-                    {[...Array(5)].map((_, i) => (
-                      <Star
-                        key={i}
-                        className={`h-4 w-4 ${
-                          i < Math.floor(product.rating || 0)
-                            ? 'text-amber-400 fill-amber-400'
-                            : 'text-muted-foreground/30'
-                        }`}
-                      />
-                    ))}
-                  </div>
-                  <span className="text-sm text-muted-foreground">
-                    ({product.rating.toFixed(1)}) • 127 reviews
-                  </span>
-                </div>
-              )}
-
-              {/* Price */}
-              <div className="flex items-center gap-3">
-                <span className="text-3xl font-bold text-primary">
-                  {formatCurrency(discountedPrice)}
-                </span>
-                {hasDiscount && (
-                  <span className="text-lg text-muted-foreground line-through">
-                    {formatCurrency(product.price)}
-                  </span>
-                )}
+            </div>
+            <div className="flex items-start gap-3">
+              <Shield className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+              <div>
+                <p className="font-medium">1-Year Warranty</p>
+                <p className="text-sm text-muted-foreground">Coverage included</p>
               </div>
-
-              {/* Description */}
-              <p className="text-muted-foreground leading-relaxed text-base">
-                {product.description}
-              </p>
-
-              {/* Stock Status */}
-              <div className="flex items-center gap-2">
-                <div
-                  className={`w-2.5 h-2.5 rounded-full ${
-                    isInStock ? 'bg-green-500' : 'bg-red-500'
-                  }`}
-                />
-                <span className={`text-sm font-medium ${isInStock ? 'text-green-600' : 'text-red-600'}`}>
-                  {isInStock
-                    ? `${product.stock} in stock`
-                    : 'Out of stock'}
-                </span>
-              </div>
-
-              {/* Add to Cart */}
-              <div className="pt-4">
-                <AddToCart product={product} size="lg" className="rounded-full h-12 text-base px-8" />
-              </div>
-
-              {/* Features */}
-              <div className="pt-8 space-y-4 border-t border-border/50 mt-4">
-                <div className="flex items-center gap-4">
-                  <div className="p-3 bg-muted rounded-xl">
-                    <Truck className="h-5 w-5 text-muted-foreground" />
-                  </div>
-                  <div>
-                    <p className="font-medium text-foreground">Free Shipping</p>
-                    <p className="text-sm text-muted-foreground">On orders over ₦50,000</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-4">
-                  <div className="p-3 bg-muted rounded-xl">
-                    <Shield className="h-5 w-5 text-muted-foreground" />
-                  </div>
-                  <div>
-                    <p className="font-medium text-foreground">2 Year Warranty</p>
-                    <p className="text-sm text-muted-foreground">Full manufacturer warranty</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-4">
-                  <div className="p-3 bg-muted rounded-xl">
-                    <RefreshCw className="h-5 w-5 text-muted-foreground" />
-                  </div>
-                  <div>
-                    <p className="font-medium text-foreground">30-Day Returns</p>
-                    <p className="text-sm text-muted-foreground">Hassle-free return policy</p>
-                  </div>
-                </div>
+            </div>
+            <div className="flex items-start gap-3">
+              <RefreshCw className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+              <div>
+                <p className="font-medium">30-Day Returns</p>
+                <p className="text-sm text-muted-foreground">No questions asked</p>
               </div>
             </div>
           </div>
         </div>
       </div>
+
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }} />
     </PageLayout>
-  );
+  )
 }

@@ -1,37 +1,17 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import { orderService } from "@/services/orders"
+// import { useO } from "@/hooks"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import Link from "next/link"
 import { Package, Loader2, ArrowRight } from "lucide-react"
 import { formatCurrency, formatDate } from "@/utils/helpers"
-import type { Order } from "@/lib/types"
+import { useOrdersQuery } from "@/hooks/queries/useOrders"
 
 export default function OrdersPage() {
-  const [orders, setOrders] = useState<Order[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-
-  useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        setLoading(true)
-        const response = await orderService.getOrders()
-        setOrders(response.data || [])
-      } catch (err: any) {
-        // It's okay if there are no orders
-        console.log("No orders found or error:", err.message)
-        setOrders([])
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchOrders()
-  }, [])
+  const { data, isLoading, error } = useOrdersQuery()
+  const orders = data?.data || []
 
   const statusColors: Record<string, string> = {
     pending: "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400",
@@ -41,10 +21,23 @@ export default function OrdersPage() {
     cancelled: "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400",
   }
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-red-500 mb-4">Error loading orders</p>
+          <Link href="/">
+            <Button>Back to Home</Button>
+          </Link>
+        </div>
       </div>
     )
   }
@@ -80,41 +73,28 @@ export default function OrdersPage() {
                   </div>
                 </div>
 
-                <div className="border-t border-border pt-4">
-                  <div className="space-y-2 mb-4">
-                    {order.items?.slice(0, 3).map((item, index) => (
-                      <div key={index} className="flex justify-between text-sm">
-                        <span className="text-foreground line-clamp-1">
-                          {item.product?.name || "Product"}
-                        </span>
-                        <span className="text-muted-foreground shrink-0 ml-2">
-                          {item.quantity} x {formatCurrency(item.product?.price || 0)}
-                        </span>
-                      </div>
-                    ))}
-                    {order.items && order.items.length > 3 && (
-                      <p className="text-sm text-muted-foreground">
-                        +{order.items.length - 3} more item(s)
-                      </p>
-                    )}
+                <div className="space-y-2 mb-4 pb-4 border-b border-border">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Items:</span>
+                    <span className="font-medium">{order.items?.length || 0}</span>
                   </div>
-                  <Link href={`/orders/${order.id}`}>
-                    <Button variant="outline" size="sm" className="gap-1">
-                      View Details
-                      <ArrowRight className="h-3 w-3" />
-                    </Button>
-                  </Link>
                 </div>
+
+                <Link href={`/orders/${order.id}`}>
+                  <Button variant="outline" size="sm" className="w-full">
+                    View Details <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </Link>
               </Card>
             ))}
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center py-20">
-            <Package className="h-16 w-16 text-muted-foreground mb-4" />
-            <h2 className="text-xl font-semibold text-foreground mb-2">No orders yet</h2>
-            <p className="text-muted-foreground mb-6">Start shopping to see your orders here</p>
+          <div className="text-center py-12">
+            <Package className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+            <h3 className="text-lg font-semibold text-foreground mb-2">No orders yet</h3>
+            <p className="text-muted-foreground mb-4">Start shopping to create your first order</p>
             <Link href="/shop-all">
-              <Button size="lg">Start Shopping</Button>
+              <Button>Continue Shopping</Button>
             </Link>
           </div>
         )}

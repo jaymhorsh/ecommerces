@@ -1,8 +1,8 @@
 "use client"
 
 import { useState } from "react"
-import { useAuthStore } from "@/store/auth-store"
-import { AuthModal } from "@/components/auth/auth-modal"
+import { useAuthStore } from "@/store/auth"
+// import { AuthModal } from "@/components/auth/auth-modal"
 import { Button } from "@/components/ui/button"
 import type { ReactNode } from "react"
 
@@ -21,7 +21,7 @@ export function CheckoutGate({ children, onProceed }: CheckoutGateProps) {
         <Button onClick={() => setAuthModalOpen(true)} className="w-full" size="lg">
           Sign In to Continue
         </Button>
-        <AuthModal isOpen={authModalOpen} onClose={() => setAuthModalOpen(false)} onSuccess={onProceed} />
+        {/* <AuthModal isOpen={authModalOpen} onClose={() => setAuthModalOpen(false)} onSuccess={onProceed} /> */}
       </>
     )
   }

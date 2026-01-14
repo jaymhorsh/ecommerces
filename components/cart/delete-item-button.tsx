@@ -1,23 +1,23 @@
-'use client';
+"use client"
 
-import type { CartItem } from '@/lib/types';
-import { Button } from '../ui/button';
-import { useCart } from '@/components/cart/cart-context';
-import { useTransition } from 'react';
-import { Loader } from '../ui/loader';
+import type { CartItem } from "@/lib/types"
+import { Button } from "../ui/button"// Updated import to use Zustand-based hook instead of Context
+import { useTransition } from "react"
+import { Loader } from "../ui/loader"
+import { useRemoveFromCartMutation } from "@/hooks/mutations/useRemoveFromCartMutation"
 
 export function DeleteItemButton({ item }: { item: CartItem }) {
-  const { removeFromCart } = useCart();
-  const [isPending, startTransition] = useTransition();
+  const { removeFromCartFn } = useRemoveFromCartMutation()
+  const [isPending, startTransition] = useTransition()
 
   return (
     <form
       className="-mr-1 -mb-1 opacity-70"
       onSubmit={(e) => {
-        e.preventDefault();
+        e.preventDefault()
         startTransition(async () => {
-          await removeFromCart(item.id);
-        });
+          await removeFromCartFn(item.id)
+        })
       }}
     >
       <Button
@@ -28,10 +28,10 @@ export function DeleteItemButton({ item }: { item: CartItem }) {
         className="px-2 text-sm"
         disabled={isPending}
       >
-        {isPending ? <Loader size="sm" /> : 'Remove'}
+        {isPending ? <Loader size="sm" /> : "Remove"}
       </Button>
     </form>
-  );
+  )
 }
 
-export default DeleteItemButton;
+export default DeleteItemButton
