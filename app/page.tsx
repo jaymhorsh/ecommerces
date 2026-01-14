@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { ShoppingCart, ArrowRight, Sparkles } from "lucide-react"
 import { useProductsQuery } from "@/hooks"
-import { motion, AnimatePresence } from "motion/react"
+import { motion, AnimatePresence } from "framer-motion"
 import { ProductCard } from "@/components/products/product-card"
 import { ProductCardSkeleton } from "@/components/products/product-card-skeleton"
 
